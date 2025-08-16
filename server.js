@@ -23,6 +23,7 @@ const PORT = process.env.PORT || 5000;
 // 6. Middleware (البرمجيات الوسيطة)
 app.use(cors()); // للسماح بطلبات من نطاقات مختلفة (مهم للواجهة الأمامية)
 app.use(express.json()); // لتحليل طلبات JSON الواردة
+// test <-- أضف شيئاً كهذا
 
 // 7. تعريف المسارات (Routes)
 app.use('/api/auth', authRoutes);
