@@ -97,6 +97,21 @@ router.get('/leaderboard', async (req, res) => {
 });
 
 // @route   GET /api/users/stats/registrations
-router.get('/stats/registrations', auth, adminMiddleware, async (req, res) => { /* ... كود الإحصائيات ... */ });
+router.get('/stats/registrations', auth, adminMiddleware, async (req, res) => {
+    try {
+        const stats = await db.query(
+            `SELECT 
+                TO_CHAR(created_at, 'YYYY-MM') as month, 
+                COUNT(id)::int as count 
+             FROM users 
+             GROUP BY month 
+             ORDER BY month`
+        );
+        res.json(stats.rows);
+    } catch (err) {
+        console.error("Error fetching registration stats:", err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 module.exports = router;
