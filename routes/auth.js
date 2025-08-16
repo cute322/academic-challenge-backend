@@ -114,5 +114,25 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+// @route   GET /api/auth/me
+// @desc    Get logged in user data from token
+// @access  Private
+router.get('/me', auth, async (req, res) => {
+    try {
+        // middleware الـ "auth" قام بفك التوكن ووضع id المستخدم في req.user
+        const user = await db.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+        
+        if (user.rows.length === 0) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        delete user.rows[0].password; // لا ترسل كلمة المرور أبداً
+        res.json(user.rows[0]);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
 
 module.exports = router;
