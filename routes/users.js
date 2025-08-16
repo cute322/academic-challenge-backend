@@ -83,5 +83,19 @@ router.delete('/me', auth, async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+router.get('/leaderboard', async (req, res) => {
+    try {
+        const leaderboard = await db.query(
+            'SELECT username, level, academic_points FROM users ORDER BY academic_points DESC, level DESC LIMIT 10'
+        );
+        res.json(leaderboard.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+});
+
+// @route   GET /api/users/stats/registrations
+router.get('/stats/registrations', auth, adminMiddleware, async (req, res) => { /* ... كود الإحصائيات ... */ });
 
 module.exports = router;

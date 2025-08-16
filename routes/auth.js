@@ -135,6 +135,7 @@ router.get('/me', auth, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
 router.get('/leaderboard', async (req, res) => {
     try {
         const leaderboard = await db.query(
@@ -146,5 +147,6 @@ router.get('/leaderboard', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+// @route   GET /api/users/stats/registrations
 
 module.exports = router;
