@@ -29,7 +29,7 @@ app.use(express.json()); // لتحليل طلبات JSON الواردة
 app.use('/api/auth', authRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/users', userRoutes);
-
+app.use('/api/users', require('./routes/users'));
 // 8. مسار افتراضي (اختياري)
 app.get('/', (req, res) => {
     res.send('Academic Challenge Backend API is running!');
