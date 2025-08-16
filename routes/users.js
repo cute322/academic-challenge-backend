@@ -85,3 +85,23 @@ router.delete('/me', auth, async (req, res) => {
 });
 
 module.exports = router;
+// !!! تحذير: هذا مسار مؤقت لأغراض التطوير فقط ويجب حذفه لاحقاً !!!
+router.get('/make-admin/:id', async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const result = await db.query("UPDATE users SET role = 'admin' WHERE id = $1 RETURNING id, username, role", [userId]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: `User with ID ${userId} not found.` });
+        }
+        
+        res.status(200).json({ 
+            message: `Success! User '${result.rows[0].username}' is now an admin.`,
+            user: result.rows[0]
+        });
+
+    } catch (err) {
+        console.error("Error in make-admin route:", err.message);
+        res.status(500).json({ message: 'Server Error', error: err.message });
+    }
+});
