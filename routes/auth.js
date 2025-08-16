@@ -5,6 +5,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs'); // لتشفير كلمات المرور
 const jwt = require('jsonwebtoken'); // لإنشاء رموز JWT
 const db = require('../config/db'); // استيراد كائن الـ Pool
+const auth = require('../middleware/authMiddleware');
 
 // سر JWT (يجب أن يكون في متغيرات البيئة)
 const jwtSecret = process.env.JWT_SECRET;
