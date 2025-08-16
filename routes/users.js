@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
 const auth = require('../middleware/authMiddleware');
+const adminMiddleware = require('../middleware/adminMiddleware');
 
 // @route   GET /api/users
 // @desc    جلب جميع المستخدمين (لأغراض إدارية)
