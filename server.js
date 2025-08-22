@@ -1,31 +1,23 @@
-// File: academic-challenge-backend/server.js (أو app.js / index.js)
-
-// 1. تحميل متغيرات البيئة (يجب أن يكون هذا السطر الأول)
+// © 2025 Dalila Cherif Slimane — Tous droits réservés. 
+// Ce code est propriétaire et confidentiel.
+// Voir le fichier LICENSE.md pour plus de détails.
 require('dotenv').config(); 
 
-// 2. استيراد المكتبات الأساسية
 const express = require('express');
 const cors = require('cors');
 const app = express();
 
-// 3. استيراد كائن الـ Pool من ملف إعداد قاعدة البيانات
-// هذا الاستيراد سيقوم تلقائيًا بتشغيل كود الاتصال في db.js عند بدء تشغيل الخادم
 const db = require('./config/db'); 
 
-// 4. استيراد المسارات (Routes)
 const authRoutes = require('./routes/auth');
 const commentRoutes = require('./routes/comments');
 const userRoutes = require('./routes/users');
 
-// 5. تعريف المنفذ
 const PORT = process.env.PORT || 5000;
 
-// 6. Middleware (البرمجيات الوسيطة)
-app.use(cors()); // للسماح بطلبات من نطاقات مختلفة (مهم للواجهة الأمامية)
-app.use(express.json()); // لتحليل طلبات JSON الواردة
-// test <-- أضف شيئاً كهذا
+app.use(cors()); 
+app.use(express.json());
 
-// 7. تعريف المسارات (Routes)
 app.use('/api/auth', authRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/users', userRoutes);

@@ -1,4 +1,6 @@
-// File: academic-challenge-backend/routes/comments.js
+// © 2025 Dalila Cherif Slimane — Tous droits réservés.
+// Ce code est propriétaire et confidentiel.
+// Voir le fichier LICENSE.md pour plus de détails.
 
 const express = require('express');
 const router = express.Router();

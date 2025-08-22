@@ -1,4 +1,6 @@
-// File: academic-challenge-backend/config/db.js
+// © 2025 Dalila Cherif Slimane — Tous droits réservés.
+// Ce code est propriétaire et confidentiel.
+// Voir le fichier LICENSE.md pour plus de détails.
 
 const { Pool } = require('pg');
 require('dotenv').config(); // تأكد من تحميل متغيرات البيئة هنا
@@ -10,7 +12,6 @@ const pool = new Pool({
     }
 });
 
-// اختبار الاتصال بقاعدة البيانات عند بدء تشغيل التطبيق
 pool.connect((err, client, release) => {
     if (err) {
         console.error('❌ Error acquiring client from DB pool:', err.stack);

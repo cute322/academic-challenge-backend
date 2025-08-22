@@ -1,3 +1,7 @@
+// © 2025 Dalila Cherif Slimane — Tous droits réservés.
+// Ce code est propriétaire et confidentiel.
+// Voir le fichier LICENSE.md pour plus de détails.
+
 const db = require('../config/db');
 const adminMiddleware = async (req, res, next) => {
     try {

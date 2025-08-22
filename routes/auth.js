@@ -1,4 +1,6 @@
-// File: academic-challenge-backend/routes/auth.js
+// © 2025 Dalila Cherif Slimane — Tous droits réservés.
+// Ce code est propriétaire et confidentiel.
+// Voir le fichier LICENSE.md pour plus de détails.
 
 const express = require('express');
 const router = express.Router();
@@ -42,7 +44,7 @@ router.post('/register', async (req, res) => {
         jwt.sign(
             payload,
             jwtSecret,
-            { expiresIn: '1h' }, // الرمز المميز صالح لمدة ساعة واحدة
+            { expiresIn: '30d' }, // الرمز المميز صالح لمدة ساعة واحدة
             (err, token) => {
                 if (err) throw err;
                 res.status(201).json({ 

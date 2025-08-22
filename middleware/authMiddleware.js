@@ -1,4 +1,6 @@
-// File: academic-challenge-backend/middleware/authMiddleware.js
+// © 2025 Dalila Cherif Slimane — Tous droits réservés.
+// Ce code est propriétaire et confidentiel.
+// Voir le fichier LICENSE.md pour plus de détails.
 
 const jwt = require('jsonwebtoken');
 require('dotenv').config(); // تأكد من تحميل متغيرات البيئة هنا
