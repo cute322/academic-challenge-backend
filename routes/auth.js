@@ -44,7 +44,7 @@ router.post('/register', async (req, res) => {
         jwt.sign(
             payload,
             jwtSecret,
-            { expiresIn: '30d' }, // الرمز المميز صالح لمدة ساعة واحدة
+            { expiresIn: '30d' }, // الرمز المميز صالح لمدة 30 يوماً عند التسجيل الجديد
             (err, token) => {
                 if (err) throw err;
                 res.status(201).json({ 
@@ -64,8 +64,9 @@ router.post('/register', async (req, res) => {
 // @route   POST /api/auth/login
 // @desc    تسجيل دخول المستخدم
 // @access  عام
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
+router.post('/login', async (req, res) => {    
+    // === التعديل الأول: استقبال قيمة "rememberMe" ===
+    const { email, password, rememberMe } = req.body; 
 
     try {
         // 1. التحقق من وجود المستخدم
@@ -74,7 +75,6 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // احصل على كائن المستخدم كاملاً
         const user = result.rows[0];
 
         // 2. مقارنة كلمة المرور المشفرة
@@ -86,29 +86,31 @@ router.post('/login', async (req, res) => {
         // 3. إنشاء رمز JWT
         const payload = {
             user: {
-                id: user.id
+                id: user.id,
+                role: user.role // أضفت الصلاحية هنا لتكون متاحة في الواجهة الأمامية إذا احتجت إليها
             }
         };
+
+        // === التعديل الثاني: تحديد مدة الصلاحية بناءً على اختيار المستخدم ===
+        const expiresIn = rememberMe ? '30d' : '3h'; // 30 يوماً إذا تم تذكره، 3 ساعات إذا لم يتم
+
         jwt.sign(
             payload,
-            jwtSecret, // تأكد من أن jwtSecret معرف لديك
-            { expiresIn: '1h' },
+            jwtSecret,
+            // === التعديل الثالث: استخدام مدة الصلاحية الجديدة هنا ===
+            { expiresIn: expiresIn }, 
             (err, token) => {
                 if (err) throw err;
-
-                // ===== START: التعديل المهم هنا =====
                 
-                // قبل إرسال كائن المستخدم، احذف كلمة المرور منه
+                // احذف كلمة المرور قبل إرسال بيانات المستخدم
                 delete user.password;
 
-                // أرسل الكائن "user" كاملاً
+                // أرسل كائن "user" كاملاً مع بقية البيانات المفيدة
                 res.json({ 
                     message: 'Logged in successfully',
-                    user: user, // <-- أرسل "user" كاملاً وليس كائن جديد
+                    user: user,
                     token 
                 });
-
-                // ===== END: التعديل المهم هنا =====
             }
         );
 
@@ -117,6 +119,8 @@ router.post('/login', async (req, res) => {
         res.status(500).send('Server error');
     }
 });
+
+
 // @route   GET /api/auth/me
 // @desc    Get logged in user data from token
 // @access  Private
@@ -138,6 +142,9 @@ router.get('/me', auth, async (req, res) => {
     }
 });
 
+// @route   GET /api/users/leaderboard
+// @desc    Get top 10 users by points
+// @access  Public
 router.get('/leaderboard', async (req, res) => {
     try {
         const leaderboard = await db.query(
@@ -149,6 +156,6 @@ router.get('/leaderboard', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-// @route   GET /api/users/stats/registrations
+
 
 module.exports = router;
